@@ -12,14 +12,16 @@ import Header from "../components/Header";
 function Home() {
   return (
     <>
-      <Helmet><title>Home - SMC</title></Helmet>
+      <Helmet>
+        <title>Home - SMC</title>
+      </Helmet>
       <Header />
       <Slidshow />
       <WhySection />
       <Principal />
-      {/* <OurFaculties/> */}
-      <LatestNews />
+      <OurFaculties />
       <SmcNumber />
+      <LatestNews />
       <Affiliation />
       <OurLocation />
       <Footer />

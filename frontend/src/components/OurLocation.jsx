@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from "react";
-// Import API constants
 import { SETTINGS_API } from "../api";
 
 function OurLocation() {
   const [settings, setSettings] = useState(null);
 
   useEffect(() => {
-    // FIXED: Use SETTINGS_API.SITE to fetch site settings consistently
     fetch(SETTINGS_API.SITE)
       .then((res) => res.json())
       .then((data) => setSettings(data))
@@ -14,79 +12,93 @@ function OurLocation() {
   }, []);
 
   return (
-    <section className="bg-[#f5f5f5] py-[60px] font-['Poppins',_Arial,_sans-serif] overflow-hidden">
-      <div className="max-w-[1250px] mx-auto px-4">
-        <h2 className="text-[#8B0000] text-[2.5rem] font-bold text-center mb-[40px] relative pb-[15px] animate-fadeInDown after:content-[''] after:absolute after:left-1/2 after:bottom-0 after:-translate-x-1/2 after:w-[90px] after:h-[5px] after:bg-[#8B0000] after:rounded-[4px] after:animate-growLine">Our Location</h2>
+    <section className="bg-white py-12 md:py-20 font-sans">
+      <div className="max-w-[1250px] mx-auto px-4 text-center">
+        {/* Section Heading with specific screenshot styling */}
+        <div className="mb-12">
+          <h2 className="text-[#8B0000] text-3xl md:text-5xl font-black mb-4 relative pb-5  inline-block">
+            Our Location
+            <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-16 h-1 bg-[#8B0000] rounded-full"></span>
+          </h2>
+        </div>
 
-        <div className="bg-white rounded-[8px] shadow-[0_5px_15px_rgba(0,0,0,0.08)] p-[30px] flex flex-wrap gap-[20px] animate-fadeUp md:flex-col">
-          <div className="flex-1 min-w-[300px]">
-            <div className="rounded-[8px] overflow-hidden shadow-[0_2px_10px_rgba(0,0,0,0.05)] h-[400px] w-full animate-slideInLeft md:h-[300px]">
-              <iframe
-                src={
-                  // FIXED: Removed the invalid URL and kept the setting property
-                  settings?.mapEmbedUrl ||
-                  "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1000!2d72.6784!3d32.0673!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMTPCsDQzJzA1LjAiTiA3MMKwMDgnNDIuMCJF!5e0!3m2!1sen!2s!4v1647416393710!5m2!1sen!2s"
-                }
-                allowFullScreen
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-                title="Sargodha Medical College Map"
-                className="border-0 w-full h-full"
-              ></iframe>
-            </div>
+        {/* The White Card Container */}
+        <div className="bg-white rounded-xl shadow-[0_4px_30px_rgba(0,0,0,0.06)] border border-gray-100 p-4 md:p-8 flex flex-col lg:flex-row gap-10 text-left">
+          {/* Map Side */}
+          <div className="flex-1 min-h-[350px] rounded-lg overflow-hidden border border-gray-200">
+            <iframe
+              src={
+                settings?.mapEmbedUrl ||
+                "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3403.4832578508493!2d72.70582237539228!3d32.0831610739611!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3921763a763a763b%3A0x7d8a6b6b6b6b6b6b!2sSargodha%20Medical%20College!5e0!3m2!1sen!2spk!4v1700000000000!5m2!1sen!2spk"
+              }
+              className="w-full h-full border-0"
+              allowFullScreen=""
+              loading="lazy"
+              title="SMC Location Map"
+            ></iframe>
           </div>
 
-          <div className="flex-1 min-w-[300px]">
-            <div className="animate-slideInRight">
-              <h3 className="text-[#8B0000] font-semibold text-[1.5rem] mb-[20px]">
+          {/* Details Side */}
+          <div className="lg:w-[40%] flex flex-col justify-between py-2">
+            <div>
+              <h3 className="text-[#8B0000] text-2xl md:text-3xl font-black mb-8 tracking-tight">
                 Find Us
               </h3>
 
-              <div className="flex items-start mb-[15px] text-[#333] transition-all duration-300 hover:translate-x-[8px] hover:text-[#8B0000] group">
-                <i className="fas fa-map-marker-alt text-[1.3rem] text-[#8B0000] mr-[12px] w-[25px] text-center mt-1"></i>
-                <div>
-                  <strong className="block">Address</strong>
-                  <p className="text-[0.95rem]">{settings?.address || "Loading..."}</p>
+              <div className="space-y-7">
+                {/* Address */}
+                <div className="flex gap-5">
+                  <i className="fas fa-map-marker-alt text-[#8B0000] text-2xl mt-1"></i>
+                  <div>
+                    <h4 className="font-bold text-gray-900 text-lg">Address</h4>
+                    <p className="text-gray-600 leading-relaxed">
+                      {settings?.address ||
+                        "Sargodha Medical College, Faisalabad Road, Sargodha, Punjab, Pakistan"}
+                    </p>
+                  </div>
+                </div>
+
+                {/* Phone */}
+                <div className="flex gap-5">
+                  <i className="fas fa-phone-alt text-[#8B0000] text-2xl mt-1"></i>
+                  <div>
+                    <h4 className="font-bold text-gray-900 text-lg">Phone</h4>
+                    <p className="text-gray-600 font-medium">
+                      {settings?.phone || "(048) 9232004"}
+                    </p>
+                  </div>
+                </div>
+
+                {/* Email */}
+                <div className="flex gap-5">
+                  <i className="fas fa-envelope text-[#8B0000] text-2xl mt-1"></i>
+                  <div>
+                    <h4 className="font-bold text-gray-900 text-lg">Email</h4>
+                    <p className="text-gray-600 break-all font-medium">
+                      {settings?.email || "Principle.smc.health@punjab.gov.pk"}
+                    </p>
+                  </div>
                 </div>
               </div>
+            </div>
 
-              <div className="flex items-start mb-[15px] text-[#333] transition-all duration-300 hover:translate-x-[8px] hover:text-[#8B0000] group">
-                <i className="fas fa-phone-alt text-[1.3rem] text-[#8B0000] mr-[12px] w-[25px] text-center mt-1"></i>
-                <div>
-                  <strong className="block">Phone</strong>
-                  <p className="text-[0.95rem]">{settings?.phone || "Loading..."}</p>
-                </div>
-              </div>
-
-              <div className="flex items-start mb-[15px] text-[#333] transition-all duration-300 hover:translate-x-[8px] hover:text-[#8B0000] group">
-                <i className="fas fa-envelope text-[1.3rem] text-[#8B0000] mr-[12px] w-[25px] text-center mt-1"></i>
-                <div>
-                  <strong className="block">Email</strong>
-                  <p className="text-[0.95rem]">{settings?.email || "Loading..."}</p>
-                </div>
-              </div>
-
-              <h4 className="text-[#8B0000] font-semibold mt-[20px] mb-[10px]">
+            {/* Opening Hours Section */}
+            <div className="mt-10 pt-8 border-t border-gray-100">
+              <h3 className="text-[#8B0000] text-2xl font-black mb-5 tracking-tight">
                 Opening Hours
-              </h4>
-              <ul className="list-none text-[#333333d3] p-0">
-                <li className="flex justify-between mb-[5px] text-[0.95rem] transition-colors duration-300 hover:text-[#8B0000]">
-                  <span>Monday - Friday:</span>{" "}
-                  <span>
-                    {settings?.openingHours?.mondayFriday || "Loading..."}
+              </h3>
+              <div className="space-y-2">
+                <div className="flex justify-between items-center text-gray-700">
+                  <span className="font-bold">Monday - Friday:</span>
+                  <span className="font-medium">9:00 AM - 4:00 PM</span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="font-bold text-gray-700">
+                    Saturday - Sunday:
                   </span>
-                </li>
-                <li className="flex justify-between mb-[5px] text-[0.95rem] transition-colors duration-300 hover:text-[#8B0000]">
-                  <span>Saturday:</span>{" "}
-                  <span>
-                    {settings?.openingHours?.saturday || "Loading..."}
-                  </span>
-                </li>
-                <li className="flex justify-between mb-[5px] text-[0.95rem] transition-colors duration-300 hover:text-[#8B0000]">
-                  <span>Sunday:</span>{" "}
-                  <span>{settings?.openingHours?.sunday || "Loading..."}</span>
-                </li>
-              </ul>
+                  <span className="text-[#8B0000] font-bold">Closed</span>
+                </div>
+              </div>
             </div>
           </div>
         </div>
