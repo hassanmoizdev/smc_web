@@ -10,9 +10,7 @@ router.post("/", downloadFile.single("file"), async (req, res) => {
   try {
     const { title, description } = req.body;
     
-    // Handle file upload (Cloudinary or local)
     const fileData = handleFileUpload(req.file, 'downloads');
-
     const newDownload = new Downloads({ 
       title, 
       description, 

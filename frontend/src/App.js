@@ -7,11 +7,7 @@ import VisionMission from "./pages/VisionMission.jsx";
 import PrincipalMessage from "./pages/PrincipalMessage.jsx";
 import AdmissionCriteria from "./pages/AdmissionCriteria.jsx";
 import FeeStructure from "./pages/FeeStructure.jsx";
-import Departmentn1 from "./pages/Department1.jsx";
-import Departmentn2 from "./pages/Department2.jsx";
 import Departments from "./pages/Departments.jsx";
-import Departmentn3 from "./pages/Department3.jsx";
-import Departmentn4 from "./pages/Department4.jsx";
 import Research from "./pages/Research.jsx";
 import NewsEvents from "./pages/NewsEvents.jsx";
 import Notifications from "./pages/Notifications.jsx";
@@ -46,10 +42,10 @@ function App() {
           <Route path="/admission-criteria" element={<AdmissionCriteria />} />
           <Route path="/fee-structure" element={<FeeStructure />} />
           <Route path="/departments" element={<Departments />} />
-          <Route path="/department-of-physical-therapy" element={<Departmentn1 />} />
+          {/* <Route path="/department-of-physical-therapy" element={<Departmentn1 />} />
           <Route path="/department-of-allied-health-sciences" element={<Departmentn2 />} />
           <Route path="/department-of-food-and-nutrition-sciences" element={<Departmentn3 />} />
-          <Route path="/department-of-applied-sciences" element={<Departmentn4 />} />
+          <Route path="/department-of-applied-sciences" element={<Departmentn4 />} /> */}
           <Route path="/research" element={<Research />} />
           <Route path="/news-events" element={<NewsEvents />} />
           <Route path="/notifications" element={<Notifications />} />

@@ -1,12 +1,13 @@
 import express from "express";
 import jwt from "jsonwebtoken";
 import Admin from "../models/admin.js";
+import protect from "../utils/auth.js";
 
 const router = express.Router();
-const JWT_SECRET = process.env.JWT_SECRET || "secret_key_123";
+const JWT_SECRET = process.env.JWT_SECRET || "your_jwt_secret_key_here";
 
 router.post("/signup", async (req, res) => {
-  try {
+  try { 
     const { name, email, password } = req.body;
     const existing = await Admin.findOne({ email });
     if (existing) return res.status(400).json({ message: "Admin already exists" });
@@ -37,10 +38,12 @@ router.post("/login", async (req, res) => {
 
     const token = jwt.sign({ id: admin._id }, JWT_SECRET, { expiresIn: "1d" });
 
+    console.log("Login successful");
     res.json({
       token,
       admin: { name: admin.name, email: admin.email, id: admin._id },
     });
+    
   } catch (err) {
     res.status(500).json({ message: "Login failed", error: err.message });
   }
