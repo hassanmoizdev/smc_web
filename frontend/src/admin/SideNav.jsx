@@ -44,7 +44,7 @@ function SideNav() {
       isActive 
         ? "bg-white/20 text-white shadow-lg font-semibold before:h-full" 
         : "before:h-0 hover:before:h-[60%]"
-    } before:content-[''] before:absolute before:left-0 before:top-12 before:-translate-y-1/2 before:w-[4px] before:bg-white before:rounded-r-lg before:transition-all before:duration-300`;
+    } before:content-[''] before:absolute before:left-0 before:top-1/2 before:-translate-y-1/2 before:w-[4px] before:bg-white before:rounded-r-lg before:transition-all before:duration-300`;
 
   return (
     <>
@@ -76,7 +76,7 @@ function SideNav() {
             </div>
 
             {/* Navigation Links */}
-            <nav className="flex flex-col gap-1 overflow-y-auto custom-scrollbar overflow-hidden">
+            <nav className="flex flex-col gap-1 custom-scrollbar overflow-hidden">
               {navLinks.map((link) => (
                 <NavLink 
                   key={link.path} 
