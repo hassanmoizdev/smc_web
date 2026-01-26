@@ -159,14 +159,7 @@ function Header() {
                     Admission Criteria
                   </NavLink>
                 </li>
-                <li>
-                  <NavLink
-                    to="/fee-structure"
-                    className={({ isActive }) => navClass(isActive)}
-                  >
-                    Fee Structure
-                  </NavLink>
-                </li>
+              
               </ul>
             </li>
 

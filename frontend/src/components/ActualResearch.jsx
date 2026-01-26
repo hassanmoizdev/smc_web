@@ -1,22 +1,45 @@
-import React from 'react';
+import React from "react";
 
-function ActualResearch() {
+const ActualResearch = () => {
   return (
-    <>
-      <div 
-        className="relative w-full h-[45vh] sm:h-[45vh] max-sm:h-[40vh] bg-center bg-cover bg-no-repeat flex justify-center items-center font-['Poppins',_Arial,_sans-serif]" 
-        style={{ backgroundImage: "url('/images/sihsbuilding.jpg')" }}
+    <div className="w-full">
+      {/* Hero Section with Building Background */}
+      <div
+        className="relative h-[300px] md:h-[400px] w-full flex items-center justify-center bg-cover bg-center"
+        style={{
+          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('/images/4.png')`,
+        }}
       >
-        {/* Overlay */}
-        <div className="absolute inset-0 bg-[rgba(139,0,0,0.7)] flex justify-center items-center px-5">
-          {/* Heading */}
-          <h1 className="text-white text-[1.8rem] sm:text-[2.3rem] md:text-[3rem] font-bold text-center tracking-[1px] sm:tracking-[2px] uppercase leading-[1.3] z-[2] drop-shadow-[2px_2px_6px_rgba(0,0,0,0.6)]">
-            Our Research And Publications
-          </h1>
+        <h1 className="text-white text-4xl md:text-6xl font-extrabold tracking-tight text-center px-4">
+          Our Research & Publications
+        </h1>
+      </div>
+
+      {/* Main Content Section */}
+      <div className="bg-white py-16 px-4">
+        <div className="max-w-6xl mx-auto text-center">
+          {/* Section Heading with Maroon Underline */}
+          <div className="mb-12">
+            <h2 className="text-[#8B0000] text-3xl md:text-4xl font-bold uppercase inline-block relative pb-3">
+              Recent Papers & Projects
+              <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-16 h-[3px] bg-[#8B0000]"></span>
+            </h2>
+          </div>
+
+          {/* Empty State Box Matching the Screenshot */}
+          <div className="max-w-4xl mx-auto bg-white rounded-lg border border-gray-100 shadow-sm p-12 md:p-20">
+            <div className="flex items-center justify-center gap-2 text-gray-500 text-base md:text-lg font-medium">
+              <span className="text-2xl">☹</span>
+              <p>
+                No research papers or projects to display yet. Please check back
+                later!
+              </p>
+            </div>
+          </div>
         </div>
       </div>
-    </>
+    </div>
   );
-}
+};
 
 export default ActualResearch;

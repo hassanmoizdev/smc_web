@@ -1,66 +1,83 @@
-import React, { useEffect, useState } from "react";
-// Import API constants and API_BASE_URL
-import { CONTENT_API, API_BASE_URL } from "../api";
+import React from "react";
+import { ExternalLink } from "lucide-react";
 
-function NotificationPage() {
-  const [notifications, setNotifications] = useState([]);
+const NotificationsPage = () => {
+  const notifications = [
+    {
+      id: 1,
+      title: "PTM NOTICE",
+      image: "/images/noti.jpg", // Preview ke liye
+      fileUrl: "/images/noti.jpg", // Click par khulne/download ke liye
+    },
+  ];
 
-  // Extract the root domain for file URLs: API_BASE_URL
-  const baseDomainUrl = API_BASE_URL.replace("/api", "");
+  const handleAction = (url) => {
+    // Ye image ko doosray tab mein open karega jahan se right-click karke download ho sakti hai
+    //const newTab = window.open(url, "_blank", "noopener,noreferrer");
 
-  useEffect(() => {
-    const fetchNotifications = async () => {
-      try {
-        // FIXED: Use CONTENT_API.NOTIFICATIONS
-        const res = await fetch(CONTENT_API.NOTIFICATIONS);
-        const data = await res.json();
-        setNotifications(data);
-      } catch (err) {
-        console.error("Error fetching notifications:", err);
-      }
-    };
-    fetchNotifications();
-  }, []);
+    // Agar aap chahte hain ke click karte hi direct download trigger ho (bina show kiye):
+    /*
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'Notification-Image.png';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    */
+  };
 
   return (
-    <div className="max-w-[900px] mx-auto p-[40px_20px]">
-      <div className="text-center mb-[30px]">
-        <h1 className="text-[2rem] font-bold text-[#8B0000] relative inline-block">Notifications</h1>
-      </div>
+    <div className="bg-white py-16 px-4">
+      <div className="max-w-6xl mx-auto">
+        {/* Section Title */}
+        <div className="text-center mb-16">
+          <h2 className="text-[#8B0000] text-4xl md:text-5xl font-extrabold uppercase inline-block relative pb-4">
+            Notifications
+            <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-20 h-[4px] bg-[#8B0000]"></span>
+          </h2>
+        </div>
 
-      <div className="flex flex-col gap-[20px]">
-        {notifications.length === 0 ? (
-          <div className="bg-[#fffdf5] border border-dashed border-[#ccc] rounded-[10px] p-[30px] text-center text-[#666] text-[1.1rem] animate-fadeIn">
-            <i className="far fa-sad-tear text-[2rem] text-[#8B0000] mb-[10px]"></i>
-            <p>No notifications to display. Please check back later!</p>
-          </div>
-        ) : (
-          notifications.map((noti) => (
-            <div key={noti._id} className="flex items-start gap-[15px] bg-white rounded-[12px] p-[20px] shadow-[0_4px_12px_rgba(0,0,0,0.08)] animate-fadeInUp md:flex-col">
-              <div className="bg-[#8B0000] text-white rounded-full w-[45px] h-[45px] flex items-center justify-center text-[18px] shrink-0 md:w-[40px] md:h-[40px] md:text-[16px]">
-                <i className="fas fa-bell"></i>
+        {/* Card Layout */}
+        <div className="flex justify-center md:justify-start">
+          {notifications.map((item) => (
+            <div
+              key={item.id}
+              className="bg-white rounded-xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] overflow-hidden border border-gray-100 flex flex-col items-center p-4 transition-all hover:shadow-2xl"
+              style={{ width: "280px" }}
+            >
+              {/* Image Preview Area */}
+              <div
+                className="w-full h-[280px] bg-gray-50 rounded-lg overflow-hidden border border-gray-200 mb-6 cursor-pointer group relative"
+                onClick={() => handleAction(item.fileUrl)}
+              >
+                <img
+                  src={item.image}
+                  alt={item.title}
+                  className="w-full h-full object-cover object-top transition-transform group-hover:scale-105"
+                />
+                {/* Overlay on hover */}
+                <div className="absolute inset-0 bg-black/5 group-hover:bg-black/0 transition-colors" />
               </div>
-              <div className="flex-grow">
-                <h3 className="m-[0_0_8px] text-[1.1rem] font-semibold text-[#333]">{noti.title}</h3>
-                <p className="m-[0_0_6px] text-[0.95rem] text-[#555]">{noti.message}</p>
-                {noti.imageUrl && (
-                  <img
-                    // FIXED: Use baseDomainUrl to ensure correct image path
-                    src={`${baseDomainUrl}${noti.imageUrl}`}
-                    alt={noti.title}
-                    className="max-w-full rounded-[8px] mt-[12px] shadow-[0_2px_8px_rgba(0,0,0,0.1)]"
-                  />
-                )}
-                <span className="text-[0.8rem] text-[#888]">
-                  {new Date(noti.date).toLocaleDateString()}
-                </span>
-              </div>
+
+              {/* Notice Title */}
+              <h3 className="text-[#8B0000] text-2xl font-black uppercase mb-6 text-center">
+                {item.title}
+              </h3>
+
+              {/* View & Download Button */}
+              <button
+                onClick={() => handleAction(item.fileUrl)}
+                className="w-full bg-[#8B0000] text-white py-3 px-6 rounded-lg flex items-center justify-center gap-2 font-bold text-lg hover:bg-[#700000] transition-colors"
+              >
+                View More
+                <ExternalLink size={20} strokeWidth={3} />
+              </button>
             </div>
-          ))
-        )}
+          ))}
+        </div>
       </div>
     </div>
   );
-}
+};
 
-export default NotificationPage;
+export default NotificationsPage;

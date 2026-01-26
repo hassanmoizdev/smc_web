@@ -2,48 +2,45 @@ import React from "react";
 
 function AdditionalPrincipalmsg() {
   return (
-    <div id="full-message" className="p-[60px_20px] bg-[#f5f5f5] font-['Poppins',_Arial,_sans-serif] text-[#333] leading-[1.7]">
-      <div className="max-w-[1100px] mx-auto">
-        <h2 className="text-[#8B0000] font-bold mb-[30px] text-[2rem] text-center">
+    <div
+      id="full-message"
+      className="
+        bg-[#f5f5f5] text-[#333] leading-[1.7]
+        font-['Poppins',_Arial,_sans-serif]
+
+        /* Mobile (iPhone 14) */
+        px-4 py-8
+
+        /* Desktop (UNCHANGED look) */
+        md:p-[60px_20px]
+      "
+    >
+      <div className="max-w-[1300px] mx-auto">
+        <h2
+          className="
+            text-[#8B0000] font-bold text-center mb-6
+
+            /* Mobile */
+            text-[1.6rem]
+
+            /* Desktop */
+            md:text-[2rem] md:mb-[30px]
+          "
+        >
           Our Vision and Commitment
         </h2>
 
-        <p className="mb-[18px] text-[1rem]">
-          Physiotherapy is essentially one of the healing sciences which pertain
-          to the assessment of Musculoskeletal and Neurological disorders of
-          function including pain and those of psychosomatic origin. It also
-          deals with treatment by natural sources, based on movement, manual
-          therapy and other physical agents to relieve pain, promote healing,
-          prevent or ameliorate deformity, improve function, body health,
-          stimulate or habilitate development in a child or rehabilitate those
-          impaired by disease or trauma. The responsibilities of Physiotherapist
-          therefore, revolves around the Philosophy described above i.e., aiming
-          to prevent/cure secondary physical, psychological and social trauma in
-          patients referred to him, through his advice, education and supportive
-          counselling towards good management., by the virtue of his
-          qualification. Physiotherapist acquires such a vast knowledge,
-          experience and skill that in the medical profession he is legally and
-          ethically responsible for planning, conducting and evaluating
-          physiotherapy program for persons or patients. He is responsible for
-          carrying out the Physiotherapy Treatment Program or selective part of
-          it. He is also responsible to instruct the patients or persons and
-          their families regarding the Physiotherapy Treatment Program and
-          supervise “Physiotherapy Aids, students and other health workers”.
-          Physiotherapy is required in Clinics, Industries and Games. Work of a
-          Physiotherapist includes assessment and evaluation of the patients,
-          prevention of Physical disabilities, deformities, to minimize the
-          complications already occurred or at least stop them at the level at
-          which it was received and rehabilitate. In hospital, planning the
-          program of physiotherapy, the Physiotherapist reviews the medical
-          record, evaluates the patients and identifies the patients‟ problems.
-          A Physiotherapist must also keep in mind the views of other members of
-          medical team. <br />
-          <strong>
-            Ahmad Mahmood Makhdoom <br /> Managing Director
-          </strong>
+        <p className="mb-4 text-[0.95rem] md:text-[1rem]">
+          As the Principal of Sargodha Medical College, it is my immense
+          pleasure to welcome you to our esteemed institution. Since its
+          establishment in 2006, SMC has been dedicated to upholding the highest
+          standards of medical education and fostering a nurturing environment
+          for our students. Our mission extends beyond academics; we aim to
+          cultivate compassionate, ethical, and competent healthcare
+          professionals who will serve society with distinction.
         </p>
 
-        <p className="mb-[18px] text-[1rem]">
+        <p className="mb-4 text-[0.95rem] md:text-[1rem]">
           We continually strive to update our curriculum, integrate modern
           teaching methodologies, and provide state-of-the-art facilities to
           ensure that our graduates are well-equipped to meet the challenges of
@@ -52,40 +49,32 @@ function AdditionalPrincipalmsg() {
           mentorship and academic excellence.
         </p>
 
-        <p className="mb-[18px] text-[1rem]">
-          Sargodha Medical College has laid the foundation of
-          innovative learning and respectable career for the students who
-          challenge traditional modernity. A physiotherapist is an indispensable
-          constituent of health faculty in almost every hospital in the
-          developed Countries. Public and private hospitals in Pakistan are
-          either creating or increasing the seats for physiotherapists to
-          provide comprehensive health services to the patients. SMC is
-          enlightening the youngsters about the rising scope of various health
-          profession in our country. Five year program of Doctor of
-          Physiotherapy is a vivid example of flourishing demand for
-          specialization in the above mentioned field. Similarly we are also
-          taking an initiative to start multiple other programmes related t
-          Allied Health Sciences. Our faculty is noted for its educative
-          brilliance and professional commitment. As the program director of
-          Department, I ensure the students that SMC will prove to be a source
-          of their elation. We have sowed the seed of erudition and our students
-          will nurture the tree to distribute its therapeutic fruit among all.{" "}
-          <br />
-          <strong>
-            Dr. Hassan Makhdoom <br />
-            Director/Chairman Board of Studies
-          </strong>
+        <p className="mb-4 text-[0.95rem] md:text-[1rem]">
+          We believe in holistic development, encouraging students to
+          participate in extracurricular activities, research, and community
+          service. This approach ensures that they not only excel academically
+          but also develop into well-rounded individuals and responsible
+          citizens.
         </p>
 
-        <p className="mb-[18px] text-[1rem]">
-          Thank you for considering Sargodha Medical College as
-          your partner in education. We look forward to welcoming you to our
-          vibrant community.
+        <p className="mb-4 text-[0.95rem] md:text-[1rem]">
+          Thank you for considering Sargodha Medical College as your partner in
+          education. We look forward to welcoming you to our vibrant community.
         </p>
 
-        <p className="mt-[30px] font-semibold text-[#8B0000] text-[1.05rem]">
-          Ahmad Mahmood Makhdoom <br />
-          Managing Director
+        <p
+          className="
+            mt-6 font-semibold text-[#8B0000]
+
+            /* Mobile */
+            text-[1rem]
+
+            /* Desktop */
+            md:mt-[30px] md:text-[1.05rem]
+          "
+        >
+          Prof. Dr. Muhammad Waris Farooka <br />
+          Principal, Sargodha Medical College
         </p>
       </div>
     </div>
