@@ -16,9 +16,9 @@ const ActualResearch = () => {
       </div>
 
       {/* Main Content Section */}
-      <div className="bg-white py-16 px-4">
+      {/* <div className="bg-white py-16 px-4">
         <div className="max-w-6xl mx-auto text-center">
-          {/* Section Heading with Maroon Underline */}
+          {/* Section Heading with Maroon Underline 
           <div className="mb-12">
             <h2 className="text-[#8B0000] text-3xl md:text-4xl font-bold uppercase inline-block relative pb-3">
               Recent Papers & Projects
@@ -26,7 +26,7 @@ const ActualResearch = () => {
             </h2>
           </div>
 
-          {/* Empty State Box Matching the Screenshot */}
+          {/* Empty State Box Matching the Screenshot 
           <div className="max-w-4xl mx-auto bg-white rounded-lg border border-gray-100 shadow-sm p-12 md:p-20">
             <div className="flex items-center justify-center gap-2 text-gray-500 text-base md:text-lg font-medium">
               <span className="text-2xl">☹</span>
@@ -37,7 +37,7 @@ const ActualResearch = () => {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };

@@ -75,7 +75,7 @@ function NewsandEvents() {
             src={
               // Fallback URL corrected to use https
               events[0]?.facebookEmbedUrl ||
-              "https://www.facebook.com/plugins/page.php?href=https://www.facebook.com/SIHSsargodha&tabs=timeline&width=1400&height=2200&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=true"
+              "https://www.facebook.com/plugins/page.php?href=https://www.facebook.com/SargodhaMedicalCollege/&tabs=timeline&width=1400&height=2200&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=true"
             }
             className="w-[49%] h-[2200px] bg-transparent mx-auto overflow-hidden shadow-[0_6px_18px_rgba(0,0,0,0.15)] md:w-full md:h-[1500px]"
             frameBorder="0"

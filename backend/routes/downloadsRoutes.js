@@ -8,24 +8,48 @@ const router = express.Router();
 // Upload new download
 router.post("/add", downloadFile.single("file"), async (req, res) => {
   try {
-    console.log("Received upload request:", req.body);
+    console.log("=== Upload Request Debug ===");
+    console.log("Body:", req.body);
+    console.log("File:", req.file);
+    console.log("========================");
+
     const { title, description } = req.body;
-    
-    console.log("File data:", req.file);
+
+    // Validate that file was uploaded
+    if (!req.file) {
+      console.error("No file received in request");
+      return res.status(400).json({
+        error: "No file uploaded",
+        message: "Please select a file to upload"
+      });
+    }
+
+    // Validate required fields
+    if (!title || title.trim() === '') {
+      return res.status(400).json({
+        error: "Title is required",
+        message: "Please provide a title for the file"
+      });
+    }
+
     const fileData = handleFileUpload(req.file, 'downloads');
-    const newDownload = new Downloads({ 
-      title, 
-      description, 
+    const newDownload = new Downloads({
+      title: title.trim(),
+      description: description?.trim() || '',
       fileUrl: fileData.path,
       fileSize: fileData.size,
       cloudinaryPublicId: fileData.cloudinaryPublicId || null
     });
-    
+
     await newDownload.save();
+    console.log("✅ File uploaded successfully:", newDownload._id);
     res.status(201).json(newDownload);
   } catch (error) {
-    console.error('Upload error:', error);
-    res.status(500).json({ error: "Failed to upload file" });
+    console.error('❌ Upload error:', error);
+    res.status(500).json({
+      error: "Failed to upload file",
+      message: error.message
+    });
   }
 });
 

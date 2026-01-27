@@ -103,7 +103,7 @@ function SliderSettings() {
           </div>
           <div>
             <h2 className="text-3xl font-black text-[#800000] tracking-tight">Hero Slider</h2>
-            <p className="text-gray-500 font-medium">Manage main banners for your clothing brand</p>
+            <p className="text-gray-500 font-medium">Manage main banners for Slider</p>
           </div>
         </div>
         <div className="flex gap-3 w-full md:w-auto">
@@ -129,7 +129,7 @@ function SliderSettings() {
         <div className="flex flex-col items-center justify-center p-20 bg-gray-50 rounded-[2rem] border-2 border-dashed border-gray-200 text-center">
           <ImageIcon size={64} className="text-gray-200 mb-4" />
           <h3 className="text-xl font-bold text-gray-400">Your slider is empty</h3>
-          <p className="text-gray-400 max-w-xs mx-auto mt-2">Add your first slide to start showcasing your new collections.</p>
+          <p className="text-gray-400 max-w-xs mx-auto mt-2">Add your first slide to start Slider.</p>
         </div>
       ) : (
         <div className="grid grid-cols-1 xl:grid-cols-2 gap-8">

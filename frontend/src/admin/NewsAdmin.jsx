@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { CONTENT_API, REQUEST_CONFIG, buildUrl, API_BASE_URL } from "../api";
+import { CONTENT_API, REQUEST_CONFIG, buildUrl, API_BASE_URL, API_URL } from "../api";
 import { Newspaper, Plus, Calendar, Trash2, X, Save, Image as ImageIcon, Loader2 } from "lucide-react";
 
 function NewsAdmin() {
@@ -88,7 +88,7 @@ function NewsAdmin() {
           </div>
           <div>
             <h2 className="text-3xl font-black text-[#800000] tracking-tight">News & Events</h2>
-            <p className="text-gray-500 font-medium">Broadcast updates to your brand</p>
+            <p className="text-gray-500 font-medium">Broadcast updates to your website</p>
           </div>
         </div>
         {!showForm && (
@@ -106,7 +106,7 @@ function NewsAdmin() {
         <div className="bg-[#fff5f5] p-8 rounded-3xl border border-[#ffcccc] mb-10 animate-in fade-in slide-in-from-top-4 duration-300">
           <form className="grid grid-cols-1 md:grid-cols-2 gap-6" onSubmit={handleSubmit}>
             <div className="col-span-full flex justify-between items-center">
-              <h3 className="text-xl font-bold text-[#800000]">New Brand Update</h3>
+              <h3 className="text-xl font-bold text-[#800000]">New Update</h3>
               <button type="button" onClick={() => setShowForm(false)} className="text-gray-400 hover:text-red-500">
                 <X size={24} />
               </button>
@@ -119,7 +119,7 @@ function NewsAdmin() {
                 name="title"
                 value={formData.title}
                 onChange={handleChange}
-                placeholder="e.g. New Summer Collection Launch"
+                placeholder="Add title to Event"
                 className="p-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#800000] outline-none bg-white"
                 required
               />
@@ -194,7 +194,7 @@ function NewsAdmin() {
                 <div className="relative">
                   {ev.imageUrl ? (
                     <img
-                      src={`${API_BASE_URL.replace("/api", "")}${ev.imageUrl}`}
+                      src={`${API_URL}${ev.imageUrl}`}
                       alt={ev.title}
                       className="w-24 h-20 object-cover rounded-xl shadow-sm"
                     />

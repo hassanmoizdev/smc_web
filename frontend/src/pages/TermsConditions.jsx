@@ -22,7 +22,7 @@ const TermsConditions = () => {
           <Link
             to="/home"
             className="flex items-center gap-2 text-[#8B0000] font-bold hover:opacity-80 transition-all"
-          >
+          > 
             <Home size={22} />
             <span className="hidden sm:inline">Back to Home</span>
           </Link>

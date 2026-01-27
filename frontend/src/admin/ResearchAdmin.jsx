@@ -12,6 +12,7 @@ import {
   Loader2, 
   ExternalLink 
 } from "lucide-react";
+import { API_URL } from "../api";
 
 function ResearchAdmin() {
   const [items, setItems] = useState([]);
@@ -266,7 +267,7 @@ function ResearchAdmin() {
                   
                   {i.fileUrl && (
                     <a
-                      href={`${API_BASE}${i.fileUrl}`}
+                      href={`${API_URL}${i.fileUrl}`}
                       target="_blank"
                       rel="noreferrer"
                       className="inline-flex items-center gap-2 mt-4 text-[#800000] bg-[#fff5f5] py-2 px-4 rounded-lg text-sm font-bold hover:bg-[#800000] hover:text-white transition-all"

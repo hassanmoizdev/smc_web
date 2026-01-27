@@ -15,7 +15,7 @@ import NewsEvents from "./pages/NewsEvents.jsx";
 import Notifications from "./pages/Notifications.jsx";
 import Downloads from "./pages/Downloads.jsx";
 import ContactUs from "./pages/ContactUs.jsx";
-
+import Privacy from "./pages/Privacy.jsx";
 // For Admin
 import AdminLogin from "./admin/Auth.jsx";
 import AdminSignup from "./admin/Signup.jsx";
@@ -58,6 +58,7 @@ function App() {
           <Route path="/notifications" element={<Notifications />} />
           <Route path="/downloads" element={<Downloads />} />
           <Route path="/contact-us" element={<ContactUs />} />
+          <Route path="/privacy-policy" element={<Privacy />} />
 
           {/* INDUSTRY BEST PRACTICE: Legal pages at root level */}
           <Route path="/terms-conditions" element={<TermsConditions />} />

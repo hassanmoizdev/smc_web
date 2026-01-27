@@ -1,24 +1,24 @@
 import React, { useEffect, useState } from "react";
 // Import API constants and API_BASE_URL
-import { CONTENT_API, API_BASE_URL } from "../api";
+import { CONTENT_API, API_BASE_URL, API_URL } from "../api";
 
 function ResearchPage() {
   const [research, setResearch] = useState([]);
 
   // Extract the root domain for file URLs: API_BASE_URL
-  const baseDomainUrl = API_BASE_URL.replace("/api", "");
-
+  // const baseDomainUrl = API_BASE_URL.replace("/api", "");
+  
+  const fetchResearch = async () => {
+    try {
+      // FIXED: Use CONTENT_API.RESEARCH
+      const res = await fetch(CONTENT_API.RESEARCH);
+      const data = await res.json();
+      setResearch(data);
+    } catch (err) {
+      console.error("Error fetching research:", err);
+    }
+  };
   useEffect(() => {
-    const fetchResearch = async () => {
-      try {
-        // FIXED: Use CONTENT_API.RESEARCH
-        const res = await fetch(CONTENT_API.RESEARCH);
-        const data = await res.json();
-        setResearch(data);
-      } catch (err) {
-        console.error("Error fetching research:", err);
-      }
-    };
     fetchResearch();
   }, []);
 
@@ -41,7 +41,7 @@ function ResearchPage() {
                 {item.fileUrl && (
                   <a
                     // FIXED: Use baseDomainUrl to ensure correct file link
-                    href={`${baseDomainUrl}${item.fileUrl}`}
+                    href={`${API_URL}${item.fileUrl}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-[0.95rem] font-semibold text-[#8B0000] no-underline mb-[8px] transition-colors duration-300 hover:text-[#B22222]"

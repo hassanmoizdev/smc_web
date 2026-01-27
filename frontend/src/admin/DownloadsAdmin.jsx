@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { CONTENT_API, REQUEST_CONFIG, buildUrl, API_BASE_URL } from "../api";
+import { CONTENT_API, REQUEST_CONFIG, buildUrl, API_URL } from "../api";
 import { 
   DownloadCloud, 
   Plus, 
@@ -86,9 +86,10 @@ function DownloadsAdmin() {
 };
 
   const handleDelete = async (id) => {
+    console.log(`${CONTENT_API.DOWNLOADS}/${id}`)
     if (!window.confirm("Are you sure you want to delete this asset?")) return;
     try {
-      await fetch(buildUrl(CONTENT_API.DOWNLOADS, id), REQUEST_CONFIG.DELETE);
+      await fetch(`${CONTENT_API.DOWNLOADS.get}/${id}`, REQUEST_CONFIG.DELETE);
       fetchDownloads();
     } catch (err) {
       console.error("Error deleting asset:", err);
@@ -218,7 +219,7 @@ function DownloadsAdmin() {
               
               <div className="flex items-center gap-3">
                 <a
-                  href={`${API_BASE_URL.replace("/api", "")}${file.fileUrl}`}
+                  href={`${API_URL}${file.fileUrl}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="p-3 text-[#800000] bg-[#fff5f5] hover:bg-[#800000] hover:text-white rounded-xl transition-all"
