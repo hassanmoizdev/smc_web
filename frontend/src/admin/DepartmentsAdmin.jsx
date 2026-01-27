@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Plus, Trash2, Edit3, X, Save, School } from "lucide-react";
-
-const API_BASE = process.env.REACT_APP_API_URL || "http://localhost:5000";
-
+import { CONTENT_API } from "../api";
 const DepartmentsAdmin = () => {
   const [depts, setDepts] = useState([]);
   const [showForm, setShowForm] = useState(false);
@@ -20,7 +18,7 @@ const DepartmentsAdmin = () => {
 
   const fetchDepartments = async () => {
     try {
-      const res = await fetch(`${API_BASE}/departments`);
+      const res = await fetch(`${CONTENT_API}`);
       const data = await res.json();
       setDepts(Array.isArray(data) ? data : data.departments || []);
     } catch (error) {

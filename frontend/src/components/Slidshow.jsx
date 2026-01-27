@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { SETTINGS_API, API_BASE_URL } from "../api";
+import { SETTINGS_API, API_BASE_URL, API_URL } from "../api";
 
 function Slidshow() {
   const defaultImages = [
@@ -12,7 +12,7 @@ function Slidshow() {
   const [images, setImages] = useState(defaultImages);
   const [activeIndex, setActiveIndex] = useState(0);
 
-  const baseDomainUrl = API_BASE_URL.replace("/api", "");
+  const baseDomainUrl = API_URL;
 
   useEffect(() => {
     const fetchSlider = async () => {

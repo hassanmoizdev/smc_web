@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 // Import API constants and API_BASE_URL
-import { CONTENT_API, API_BASE_URL } from "../api";
+import { CONTENT_API, API_BASE_URL, API_URL } from "../api";
 
 function NewsandEvents() {
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
 
   // Extract the root domain for file URLs: API_BASE_URL
-  const baseDomainUrl = API_BASE_URL.replace("/api", "");
+  const baseDomainUrl = API_URL;
 
   useEffect(() => {
     const fetchEvents = async () => {

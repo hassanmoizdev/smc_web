@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { SETTINGS_API, API_BASE_URL } from "../api";
+import { SETTINGS_API, API_BASE_URL, API_URL } from "../api";
 import { 
   Image as ImageIcon, 
   Plus, 
@@ -17,7 +17,7 @@ function SliderSettings() {
   const [popup, setPopup] = useState({ show: false, type: "", message: "" });
   const [isSaving, setIsSaving] = useState(false);
 
-  const baseDomainUrl = API_BASE_URL.replace("/api", "");
+  const baseDomainUrl = API_URL;
   const SLIDER_API_URL = `${SETTINGS_API.SLIDER}`;
   const UPLOAD_API_URL = `${SETTINGS_API.SLIDER}/upload`;
  //console.log(SLIDER_API_URL, UPLOAD_API_URL);

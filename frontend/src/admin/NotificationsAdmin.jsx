@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { CONTENT_API } from "../api";
+import { API_URL, CONTENT_API } from "../api";
 import { BellRing, Send, Trash2, X, Image as ImageIcon, Calendar, Megaphone, Loader2 } from "lucide-react";
 
 function NotificationsAdmin() {
@@ -209,7 +209,7 @@ function NotificationsAdmin() {
                 <div className="relative">
                   {n.imageUrl ? (
                     <img
-                      src={`${API_BASE.replace("/api", "")}${n.imageUrl}`}
+                      src={`${API_URL}${n.imageUrl}`}
                       alt="Notice"
                       className="w-20 h-20 object-cover rounded-xl shadow-sm"
                     />
