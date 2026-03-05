@@ -19,6 +19,7 @@ import TermsConditions from "./pages/TermsConditions.jsx";
 // Faculty Pages (Capitalized for React standards)
 import FacultyOfBasicSciences from "./pages/FacultyOfBasicSciences.jsx";
 import FacultyOfClinicalSciences from "./pages/FacultyOfClinicalSciences.jsx";
+import ConvocationForm from "./pages/ConvocationForm.jsx";
 
 // --- ADMIN PAGES ---
 import AdminLogin from "./admin/Auth.jsx";
@@ -72,6 +73,7 @@ function App() {
           <Route path="/news-events" element={<NewsEvents />} />
           <Route path="/notifications" element={<Notifications />} />
           <Route path="/downloads" element={<Downloads />} />
+          <Route path="/convocation" element={<ConvocationForm />} />
           <Route path="/contact-us" element={<ContactUs />} />
 
           {/* Legal Pages */}

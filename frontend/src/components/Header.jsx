@@ -91,9 +91,8 @@ function Header() {
 
           {/* MENU */}
           <ul
-            className={`flex flex-col lg:flex-row w-full gap-4 lg:w-auto bg-white lg:bg-transparent absolute lg:static top-full left-0 lg:top-auto lg:left-auto z-[1000] ${
-              menuOpen ? "block" : "hidden lg:flex"
-            }`}
+            className={`flex flex-col lg:flex-row w-full gap-4 lg:w-auto bg-white lg:bg-transparent absolute lg:static top-full left-0 lg:top-auto lg:left-auto z-[1000] ${menuOpen ? "block" : "hidden lg:flex"
+              }`}
           >
             {/* HOME */}
             <li>
@@ -112,7 +111,7 @@ function Header() {
                 className={() =>
                   navClass(
                     path.startsWith("/vision-mission") ||
-                      path.startsWith("/principal-message")
+                    path.startsWith("/principal-message")
                   )
                 }
               >
@@ -159,45 +158,45 @@ function Header() {
                     Admission Criteria
                   </NavLink>
                 </li>
-              
+
               </ul>
             </li>
 
             {/* OTHER LINKS */}
-           {/* DEPARTMENTS DROPDOWN */}
-<li className="lg:relative group">
-  <NavLink
-    to="/departments"
-    className={() =>
-      navClass(
-        path.startsWith("/faculty-") || path === "/departments"
-      )
-    }
-  >
-    DEPARTMENTS{" "}
-    <i className="fas fa-chevron-down text-[10px] ml-1" />
-  </NavLink>
+            {/* DEPARTMENTS DROPDOWN */}
+            <li className="lg:relative group">
+              <NavLink
+                to="/departments"
+                className={() =>
+                  navClass(
+                    path.startsWith("/faculty-") || path === "/departments"
+                  )
+                }
+              >
+                DEPARTMENTS{" "}
+                <i className="fas fa-chevron-down text-[10px] ml-1" />
+              </NavLink>
 
-  {/* Desktop dropdown */}
-  <ul className="hidden lg:absolute lg:top-full lg:p-2 rounded lg:min-w-[240px] bg-white border border-[#eee] flex-col group-hover:flex shadow-md z-[1000]">
-    <li>
-      <NavLink
-        to="/faculty-basic-sciences"  
-        className={({ isActive }) => navClass(isActive)}
-      >
-        Faculty of Basic Sciences
-      </NavLink>
-    </li>
-    <li>
-      <NavLink
-        to="/faculty-clinical-sciences" 
-        className={({ isActive }) => navClass(isActive)}
-      >
-        Faculty of Clinical Sciences
-      </NavLink>
-    </li>
-  </ul>
-</li>
+              {/* Desktop dropdown */}
+              <ul className="hidden lg:absolute lg:top-full lg:p-2 rounded lg:min-w-[240px] bg-white border border-[#eee] flex-col group-hover:flex shadow-md z-[1000]">
+                <li>
+                  <NavLink
+                    to="/faculty-basic-sciences"
+                    className={({ isActive }) => navClass(isActive)}
+                  >
+                    Faculty of Basic Sciences
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink
+                    to="/faculty-clinical-sciences"
+                    className={({ isActive }) => navClass(isActive)}
+                  >
+                    Faculty of Clinical Sciences
+                  </NavLink>
+                </li>
+              </ul>
+            </li>
 
             <li>
               <NavLink
@@ -229,6 +228,14 @@ function Header() {
                 className={({ isActive }) => navClass(isActive)}
               >
                 DOWNLOADS
+              </NavLink>
+            </li>
+            <li>
+              <NavLink
+                to="/convocation"
+                className={({ isActive }) => navClass(isActive)}
+              >
+                CONVOCATION
               </NavLink>
             </li>
             <li>
