@@ -15,6 +15,7 @@ import notificationRoutes from "./routes/notificationRoutes.js";
 import researchRoutes from "./routes/researchRoutes.js";
 import siteSettingRoutes from "./routes/siteSettingRoutes.js";
 import sliderRoutes from "./routes/sliderRoutes.js";
+import convocationRoutes from "./routes/convocationRoutes.js";
 
 
 const __filename = fileURLToPath(import.meta.url);
@@ -116,6 +117,7 @@ app.use(`/api/notifications`, notificationRoutes);
 app.use(`/api/research`, researchRoutes);
 app.use(`/api/site-settings`, siteSettingRoutes);
 app.use(`/api/slider`, sliderRoutes);
+app.use(`/api/convocation`, convocationRoutes);
 
 // Generic 404 handler for unmatched routes
 app.use((req, res) => {

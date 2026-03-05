@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import { Helmet } from "react-helmet-async";
+import { CONTENT_API } from "../api";
 
 const ConvocationForm = () => {
     const [formData, setFormData] = useState({
@@ -37,6 +38,9 @@ const ConvocationForm = () => {
         attendConvocation: "Yes",
     });
 
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [submitStatus, setSubmitStatus] = useState({ type: "", message: "" });
+
     const handleChange = (e) => {
         const { name, value, type, files } = e.target;
         if (type === "file") {
@@ -66,11 +70,61 @@ const ConvocationForm = () => {
         });
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log("Form Submitted", formData);
-        // Submit logic here
-        alert("Form submitted successfully!");
+        setIsSubmitting(true);
+        setSubmitStatus({ type: "", message: "" });
+
+        const data = new FormData();
+
+        // Append all text fields
+        Object.keys(formData).forEach(key => {
+            if (key !== "picture" && key !== "distinctionFiles" && key !== "positions") {
+                data.append(key, formData[key]);
+            }
+        });
+
+        // Append simple sub-objects (positions) by flat key
+        if (formData.positionHolder === "Yes") {
+            Object.keys(formData.positions).forEach(year => {
+                data.append(`position_${year}`, formData.positions[year]);
+            });
+        }
+
+        // Append main picture
+        if (formData.picture) {
+            data.append("picture", formData.picture);
+        }
+
+        // Append distinction files if applicable
+        if (formData.distinction === "Yes") {
+            Object.keys(formData.distinctionFiles).forEach(year => {
+                if (formData.distinctionFiles[year]) {
+                    data.append(`distinction_${year}`, formData.distinctionFiles[year]);
+                }
+            });
+        }
+
+        try {
+            const response = await fetch(CONTENT_API.CONVOCATION, {
+                method: "POST",
+                body: data, // fetch automatically sets the correct boundaries for FormData
+            });
+
+            const result = await response.json();
+
+            if (response.ok) {
+                setSubmitStatus({ type: "success", message: "Form submitted successfully!" });
+                // Reset form optionally here
+            } else {
+                setSubmitStatus({ type: "error", message: result.error || "Failed to submit form." });
+            }
+        } catch (error) {
+            console.error("Submission error:", error);
+            setSubmitStatus({ type: "error", message: "An error occurred while submitting." });
+        } finally {
+            setIsSubmitting(false);
+        }
     };
 
     return (
@@ -244,9 +298,14 @@ const ConvocationForm = () => {
                             </div>
                         </div>
 
-                        <div className="pt-4 border-t border-gray-200 flex justify-end">
-                            <button type="submit" className="bg-[#8b0000] text-white px-8 py-3 rounded-md font-semibold hover:bg-[#6b0000] transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#8b0000]">
-                                Submit Form
+                        <div className="pt-4 border-t border-gray-200 flex flex-col items-end gap-4">
+                            {submitStatus.message && (
+                                <div className={`w-full p-3 rounded-md text-sm ${submitStatus.type === "success" ? "bg-green-50 text-green-700 border border-green-200" : "bg-red-50 text-red-700 border border-red-200"}`}>
+                                    {submitStatus.message}
+                                </div>
+                            )}
+                            <button type="submit" disabled={isSubmitting} className="bg-[#8b0000] text-white px-8 py-3 rounded-md font-semibold hover:bg-[#6b0000] transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#8b0000] disabled:bg-gray-400 disabled:cursor-not-allowed">
+                                {isSubmitting ? "Submitting..." : "Submit Form"}
                             </button>
                         </div>
                     </form>

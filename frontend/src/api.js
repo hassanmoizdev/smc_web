@@ -1,7 +1,8 @@
 // Base URL for API endpoints
-// export const API_BASE_URL = 'https://sihs.edu.pk/api';
 export const API_BASE_URL = "https://smc.switch2itech.cloud/api";
 export const API_URL = 'https://smc.switch2itech.cloud';
+// export const API_BASE_URL = 'http://localhost:5000/api';
+// export const API_URL = 'http://localhost:5000';
 // Auth related endpoints
 export const AUTH_API = {
     LOGIN: `${API_BASE_URL}/auth/login`,
@@ -19,9 +20,10 @@ export const SETTINGS_API = {
 // Content management endpoints
 export const CONTENT_API = {
     EVENTS: `${API_BASE_URL}/events`,
-    DOWNLOADS: {get: `${API_BASE_URL}/downloads`, post: `${API_BASE_URL}/downloads/add`},
+    DOWNLOADS: { get: `${API_BASE_URL}/downloads`, post: `${API_BASE_URL}/downloads/add` },
     NOTIFICATIONS: `${API_BASE_URL}/notifications`,
     RESEARCH: `${API_BASE_URL}/research`,
+    CONVOCATION: `${API_BASE_URL}/convocation`,
 };
 
 // Helper function to build URLs with IDs

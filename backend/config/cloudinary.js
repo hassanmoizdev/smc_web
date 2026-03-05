@@ -93,6 +93,11 @@ export const uploadResearch = multer({
   limits: { fileSize: 10 * 1024 * 1024 }, // 10MB limit
 });
 
+export const uploadConvocation = multer({
+  storage: createStorage('convocations', ['jpg', 'jpeg', 'png', 'pdf']),
+  limits: { fileSize: 5 * 1024 * 1024 }, // 5MB limit per file
+});
+
 // Utility function to delete files from Cloudinary
 export const deleteFromCloudinary = async (publicId) => {
   try {
