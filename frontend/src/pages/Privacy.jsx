@@ -12,7 +12,7 @@ function PrivacySMC() {
         {
             id: "introduction",
             title: "Introduction",
-            content: "Sargodha Medical College (SMC), also known as Sargodha Institute of Health Sciences (SIHS), is committed to protecting your privacy. This Privacy Policy explains how we collect, use, and safeguard your personal information when you visit our website or use our services."
+            content: "Sargodha Medical College (SMC), is committed to protecting your privacy. This Privacy Policy explains how we collect, use, and safeguard your personal information when you visit our website or use our services."
         },
         {
             id: "information-collection",

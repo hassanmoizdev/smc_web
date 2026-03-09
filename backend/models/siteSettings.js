@@ -9,8 +9,8 @@ const siteSettingsSchema = new mongoose.Schema({
   email: { type: String, default: "principal.smc.health@punjab.gov.pk" },
   mapEmbedUrl: { type: String, default: "https://maps.app.goo.gl/RDtG8eVdgNAQK1xWA  " },
   socialLinks: {
-    facebook: { type: String, default: "https://www.facebook.com/SIHSsargodha" },
-    instagram: { type: String, default: "https://www.instagram.com/sihs.sargodha" },
+    facebook: { type: String, default: "https://www.facebook.com/smc" },
+    instagram: { type: String, default: "https://www.instagram.com/smc" },
     linkedin: { type: String, default: "#" },
   },
   openingHours: {
