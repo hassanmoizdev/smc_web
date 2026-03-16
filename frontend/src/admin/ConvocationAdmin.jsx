@@ -266,6 +266,9 @@ function ConvocationAdmin() {
     const [loading, setLoading] = useState(true);
     const [search, setSearch] = useState("");
     const [filterAttend, setFilterAttend] = useState("all"); // all | Yes | No
+    const [filterYear, setFilterYear] = useState("all"); // all | 2017-2025
+    const [currentPage, setCurrentPage] = useState(1);
+    const PAGE_SIZE = 30;
     const [selected, setSelected] = useState(null);
 
     const fetchRecords = async () => {
@@ -286,6 +289,11 @@ function ConvocationAdmin() {
         fetchRecords();
     }, []);
 
+    // Reset to first page whenever filters or search change
+    useEffect(() => {
+        setCurrentPage(1);
+    }, [search, filterAttend, filterYear]);
+
     const handleDelete = async (id) => {
         if (!window.confirm("Delete this registration?")) return;
         try {
@@ -299,6 +307,9 @@ function ConvocationAdmin() {
     const filtered = useMemo(() => {
         return records.filter((r) => {
             const matchAttend = filterAttend === "all" || r.attendConvocation === filterAttend;
+            const matchYear =
+                filterYear === "all" ||
+                (r.passingYear && String(r.passingYear) === String(filterYear));
             const q = search.toLowerCase();
             const matchSearch =
                 !q ||
@@ -307,9 +318,15 @@ function ConvocationAdmin() {
                 (r.department || "").toLowerCase().includes(q) ||
                 (r.collegeId || "").toLowerCase().includes(q) ||
                 (r.uhsReg || "").toLowerCase().includes(q);
-            return matchAttend && matchSearch;
+            return matchAttend && matchYear && matchSearch;
         });
-    }, [records, search, filterAttend]);
+    }, [records, search, filterAttend, filterYear]);
+
+    const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
+    const paginated = useMemo(() => {
+        const start = (currentPage - 1) * PAGE_SIZE;
+        return filtered.slice(start, start + PAGE_SIZE);
+    }, [filtered, currentPage]);
 
     const attending = records.filter((r) => r.attendConvocation === "Yes").length;
     const notAttending = records.filter((r) => r.attendConvocation === "No").length;
@@ -378,6 +395,26 @@ function ConvocationAdmin() {
                     />
                 </div>
 
+                {/* Passing Year filter */}
+                <div className="flex items-center gap-2">
+                    <label className="text-sm font-medium text-gray-600 whitespace-nowrap">Passing Year</label>
+                    <select
+                        value={filterYear}
+                        onChange={(e) => setFilterYear(e.target.value)}
+                        className="border border-gray-200 rounded-xl px-3 py-2 text-sm bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-[#800000]"
+                    >
+                        <option value="all">All</option>
+                        {Array.from({ length: 2025 - 2017 + 1 }).map((_, idx) => {
+                            const year = 2017 + idx;
+                            return (
+                                <option key={year} value={String(year)}>
+                                    {year}
+                                </option>
+                            );
+                        })}
+                    </select>
+                </div>
+
                 {/* Download buttons */}
                 <div className="flex gap-2 flex-wrap">
                     <DownloadBtn label="Download All" onClick={() => downloadCSV(records, "all")} />
@@ -417,16 +454,56 @@ function ConvocationAdmin() {
                                 </tr>
                             </thead>
                             <tbody>
-                                {filtered.map((r, idx) => (
-                                    <TableRow key={r._id} record={r} index={idx + 1} onView={() => setSelected(r)} onDelete={() => handleDelete(r._id)} />
+                                {paginated.map((r, idx) => (
+                                    <TableRow
+                                        key={r._id}
+                                        record={r}
+                                        index={(currentPage - 1) * PAGE_SIZE + idx + 1}
+                                        onView={() => setSelected(r)}
+                                        onDelete={() => handleDelete(r._id)}
+                                    />
                                 ))}
                             </tbody>
                         </table>
                     </div>
 
-                    {/* Footer count */}
-                    <div className="px-5 py-3 border-t border-gray-100 text-sm text-gray-500 font-medium">
-                        Showing {filtered.length} of {records.length} record{records.length !== 1 ? "s" : ""}
+                    {/* Footer count + pagination */}
+                    <div className="flex flex-wrap items-center justify-between gap-3 px-5 py-3 border-t border-gray-100 text-sm text-gray-500 font-medium">
+                        <div>
+                            Showing{" "}
+                            {filtered.length === 0
+                                ? 0
+                                : (currentPage - 1) * PAGE_SIZE + 1}{" "}
+                            -
+                            {" "}
+                            {Math.min(currentPage * PAGE_SIZE, filtered.length)} of {filtered.length} filtered record
+                            {filtered.length !== 1 ? "s" : ""} (total {records.length})
+                        </div>
+                        <div className="flex items-center gap-2">
+                            <button
+                                disabled={currentPage === 1}
+                                onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+                                className={`px-3 py-1.5 rounded-lg border text-xs font-semibold ${currentPage === 1
+                                        ? "text-gray-300 border-gray-100 cursor-not-allowed"
+                                        : "text-[#800000] border-[#800000]/30 hover:bg-[#fff5f5]"
+                                    }`}
+                            >
+                                Prev
+                            </button>
+                            <span className="text-xs text-gray-500">
+                                Page {currentPage} of {totalPages}
+                            </span>
+                            <button
+                                disabled={currentPage === totalPages}
+                                onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+                                className={`px-3 py-1.5 rounded-lg border text-xs font-semibold ${currentPage === totalPages
+                                        ? "text-gray-300 border-gray-100 cursor-not-allowed"
+                                        : "text-[#800000] border-[#800000]/30 hover:bg-[#fff5f5]"
+                                    }`}
+                            >
+                                Next
+                            </button>
+                        </div>
                     </div>
                 </div>
             )}
