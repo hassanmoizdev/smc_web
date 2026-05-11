@@ -69,15 +69,22 @@ function NewsandEvents() {
       </div>
 
       {/* Facebook Embed (from backend or static fallback) */}
+      {/* <div className="grid grid-cols-1 gap-[22px]">
+        <div className="flex justify-center mt-[20px] px-[15px] w-full md:px-[10px]">
+          <iframe src="https://www.facebook.com/plugins/post.php?href=https%3A%2F%2Fwww.facebook.com%2Fpermalink.php%3Fstory_fbid%3Dpfbid02RNcgap3nebD4Wr5ZrgXdMo7h3A1Pri9EQzFL7hPLgT3Wv39cYZCiFRCmtWJVNPsul%26id%3D61577878923296&show_text=true&width=500" width="500" height="250" style={{ border: "none", overflow: "hidden" }} scrolling="no" frameborder="0" allowFullScreen={true} allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
+            title="SMC Facebook Page"
+          ></iframe>
+        </div>
+      </div> */}
+
       <div className="grid grid-cols-1 gap-[22px]">
         <div className="flex justify-center mt-[20px] px-[15px] w-full md:px-[10px]">
           <iframe
-            src={
-              // Fallback URL corrected to use https
-              events[0]?.facebookEmbedUrl ||
-              "https://www.facebook.com/plugins/page.php?href=https://www.facebook.com/SargodhaMedicalCollege/&tabs=timeline&width=1400&height=2200&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=true"
-            }
-            className="w-[49%] h-[2200px] bg-transparent mx-auto overflow-hidden shadow-[0_6px_18px_rgba(0,0,0,0.15)] md:w-full md:h-[1500px]"
+            src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2F61577878923296&tabs=timeline&width=500&height=600&small_header=true&adapt_container_width=true&hide_cover=false&show_facepile=true"
+            width="500"
+            height="600"
+            style={{ border: "none", overflow: "hidden" }}
+            scrolling="no"
             frameBorder="0"
             allowFullScreen
             allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
