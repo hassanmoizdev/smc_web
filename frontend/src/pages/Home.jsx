@@ -9,6 +9,8 @@ import Affiliation from "../components/Affiliation";
 import Footer from "../components/Footer";
 import OurLocation from "../components/OurLocation";
 import Header from "../components/Header";
+import OurVisionAndMission from "../components/OurVisionAndMission";
+import LearningOutcomes from "../components/LearningOutcomes";
 function Home() {
   return (
     <>                
@@ -18,7 +20,9 @@ function Home() {
       <Header />
       <Slidshow />
       <WhySection />
+      <OurVisionAndMission />
       <Principal />
+      <LearningOutcomes />
       <OurFaculties />
       <SmcNumber />
       <LatestNews />
