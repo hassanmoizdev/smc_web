@@ -35,7 +35,8 @@ const ConvocationForm = () => {
         },
         department: "",
         currentPosition: "",
-        attendConvocation: "Yes",
+        transactionId: "",
+        paymentSlip: null,
     });
 
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -79,7 +80,7 @@ const ConvocationForm = () => {
 
         // Append all text fields
         Object.keys(formData).forEach(key => {
-            if (key !== "picture" && key !== "distinctionFiles" && key !== "positions" && key !== "whatsapp" && key !== "countryCode") {
+            if (key !== "picture" && key !== "paymentSlip" && key !== "distinctionFiles" && key !== "positions" && key !== "whatsapp" && key !== "countryCode") {
                 data.append(key, formData[key]);
             }
         });
@@ -97,6 +98,10 @@ const ConvocationForm = () => {
         // Append main picture
         if (formData.picture) {
             data.append("picture", formData.picture);
+        }
+
+        if (formData.paymentSlip) {
+            data.append("paymentSlip", formData.paymentSlip);
         }
 
         // Append distinction files if applicable
@@ -117,7 +122,7 @@ const ConvocationForm = () => {
             const result = await response.json();
 
             if (response.ok) {
-                setSubmitStatus({ type: "success", message: "Form submitted successfully! You will receive a confirmation email shortly." });
+                setSubmitStatus({ type: "success", message: "Form submitted successfully! Your payment will be verified by the administration. You will be notified once confirmed." });
                 // Reset form
                 setFormData({
                     name: "",
@@ -137,7 +142,8 @@ const ConvocationForm = () => {
                     positions: { year1: "", year2: "", year3: "", year4: "", year5: "" },
                     department: "",
                     currentPosition: "",
-                    attendConvocation: "Yes",
+                    transactionId: "",
+                    paymentSlip: null,
                 });
                 // Reset any file inputs manually if needed, but since we rely on state, it's mostly fine
                 const fileInputs = document.querySelectorAll('input[type="file"]');
@@ -305,22 +311,61 @@ const ConvocationForm = () => {
                                     <label className="block text-sm font-medium text-gray-700 mb-1">Department</label>
                                     <input type="text" name="department" value={formData.department} onChange={handleChange} className="w-full border border-gray-300 rounded-md p-2 focus:ring-[#8b0000] focus:border-[#8b0000]" placeholder="E.g. Cardiology, Surgery, etc." />
                                 </div>
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-2">Do you want to attend the convocation?</label>
-                                    <div className="flex gap-4">
-                                        <label className="inline-flex items-center">
-                                            <input type="radio" name="attendConvocation" value="Yes" checked={formData.attendConvocation === "Yes"} onChange={handleChange} className="text-[#8b0000] focus:ring-[#8b0000]" />
-                                            <span className="ml-2">Yes</span>
-                                        </label>
-                                        <label className="inline-flex items-center">
-                                            <input type="radio" name="attendConvocation" value="No" checked={formData.attendConvocation === "No"} onChange={handleChange} className="text-[#8b0000] focus:ring-[#8b0000]" />
-                                            <span className="ml-2">No</span>
-                                        </label>
-                                    </div>
-                                </div>
                                 <div className="md:col-span-2">
                                     <label className="block text-sm font-medium text-gray-700 mb-1">Current Working Position / Details</label>
                                     <textarea name="currentPosition" rows="3" value={formData.currentPosition} onChange={handleChange} className="w-full border border-gray-300 rounded-md p-2 focus:ring-[#8b0000] focus:border-[#8b0000]" placeholder="Detail your current working position..."></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Fee Payment */}
+                        <div>
+                            <h2 className="text-xl font-semibold border-b pb-2 mb-4 text-[#8b0000]">Fee Payment</h2>
+                            <div className="mb-6 rounded-lg border border-[#8b0000]/20 bg-[#fff8f8] p-5">
+                                <p className="text-sm font-semibold text-[#8b0000] mb-3">
+                                    Convocation fee: <span className="text-lg">Rs. 2,000</span>
+                                </p>
+                                <p className="text-sm text-gray-700 mb-3">
+                                    Transfer the fee to the account below, then enter your transaction ID and upload the payment slip.
+                                </p>
+                                <dl className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2 text-sm">
+                                    <div>
+                                        <dt className="font-medium text-gray-500">Account Title</dt>
+                                        <dd className="font-semibold text-gray-900">Principal SMC Account</dd>
+                                    </div>
+                                    <div>
+                                        <dt className="font-medium text-gray-500">Bank</dt>
+                                        <dd className="font-semibold text-gray-900">UBL</dd>
+                                    </div>
+                                    <div className="sm:col-span-2">
+                                        <dt className="font-medium text-gray-500">Account / IBAN</dt>
+                                        <dd className="font-mono font-semibold text-gray-900 break-all">PK88UNIL0112117137100018</dd>
+                                    </div>
+                                </dl>
+                            </div>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700 mb-1">Transaction ID</label>
+                                    <input
+                                        type="text"
+                                        name="transactionId"
+                                        required
+                                        value={formData.transactionId}
+                                        onChange={handleChange}
+                                        className="w-full border border-gray-300 rounded-md p-2 focus:ring-[#8b0000] focus:border-[#8b0000]"
+                                        placeholder="Enter bank / wallet transaction ID"
+                                    />
+                                </div>
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700 mb-1">Upload Payment Slip</label>
+                                    <input
+                                        type="file"
+                                        name="paymentSlip"
+                                        accept="image/*,.pdf"
+                                        required
+                                        onChange={handleChange}
+                                        className="w-full border border-gray-300 rounded-md p-2 text-sm file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-[#8b0000] file:text-white hover:file:bg-[#6b0000]"
+                                    />
                                 </div>
                             </div>
                         </div>

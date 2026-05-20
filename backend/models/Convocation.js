@@ -6,7 +6,7 @@ const convocationSchema = new mongoose.Schema(
     fatherName: { type: String, required: true },
     email: { type: String, required: true },
     whatsapp: { type: String, required: true },
-    picture: { type: String }, // Store URL/Path of the uploaded picture
+    picture: { type: String },
     collegeId: { type: String },
     uhsReg: { type: String },
     pmdReg: { type: String },
@@ -30,7 +30,20 @@ const convocationSchema = new mongoose.Schema(
     },
     department: { type: String },
     currentPosition: { type: String },
-    attendConvocation: { type: String, enum: ["Yes", "No"], default: "Yes" },
+    transactionId: { type: String, required: true },
+    paymentSlip: { type: String, required: true },
+    paymentStatus: {
+      type: String,
+      enum: ["pending", "verified", "rejected"],
+      default: "pending",
+    },
+    convocationNumber: {
+      type: Number,
+      min: 1,
+      max: 200,
+      sparse: true,
+      unique: true,
+    },
   },
   { timestamps: true }
 );

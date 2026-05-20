@@ -27,34 +27,25 @@ const app = express();
 app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ extended: true, limit: "50mb" }));
 app.use(cookieParser());
-// Configure CORS based on environment
+// Vercel/production deploy: lock to FRONTEND_URL. Local server: allow CRA (localhost:3000).
+const isVercelDeploy = process.env.VERCEL_ENV === "1";
 const corsOptions = {
-  origin: process.env.NODE_ENV === 'production'
-    ? process.env.FRONTEND_URL
-    : "http://localhost:3000",
+  origin: isVercelDeploy
+    ? process.env.FRONTEND_URL || false
+    : true,
   credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization']
+  methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
 };
 
 app.use(cors(corsOptions));
 
-// Only serve static uploads in development
-if (process.env.NODE_ENV !== "production" && process.env.VERCEL_ENV !== "1") {
+// Serve local uploads when running the API locally (not on Vercel)
+if (!isVercelDeploy) {
   app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 }
 
-// Serve React build in production (if using combined deployment)
-if (process.env.NODE_ENV === "production" && fs.existsSync(path.join(__dirname, "../frontend/build"))) {
-  const clientBuildPath = path.join(__dirname, "../frontend/build");
-  app.use(express.static(clientBuildPath));
-  app.get("*", (req, res) => {
-    res.sendFile(path.join(clientBuildPath, "index.html"));
-  });
-}
-
-// Only create upload directories in development/local environment
-if (process.env.NODE_ENV !== "production" && process.env.VERCEL_ENV !== "1") {
+if (!isVercelDeploy) {
   // Ensure uploads directories exist, create if missing
   const uploadDirs = [
     path.join(__dirname, "uploads/events"),
@@ -62,6 +53,7 @@ if (process.env.NODE_ENV !== "production" && process.env.VERCEL_ENV !== "1") {
     path.join(__dirname, "uploads/notifications"),
     path.join(__dirname, "uploads/research"),
     path.join(__dirname, "uploads/logos"),
+    path.join(__dirname, "uploads/convocations"),
   ];
   uploadDirs.forEach((dir) => {
     if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
@@ -119,6 +111,15 @@ app.use(`/api/site-settings`, siteSettingRoutes);
 app.use(`/api/slider`, sliderRoutes);
 app.use(`/api/convocation`, convocationRoutes);
 
+// Serve React build in production (after API routes so /api/* is not swallowed)
+if (process.env.NODE_ENV === "production" && fs.existsSync(path.join(__dirname, "../frontend/build"))) {
+  const clientBuildPath = path.join(__dirname, "../frontend/build");
+  app.use(express.static(clientBuildPath));
+  app.get(/^\/(?!api).*/, (req, res) => {
+    res.sendFile(path.join(clientBuildPath, "index.html"));
+  });
+}
+
 // Generic 404 handler for unmatched routes
 app.use((req, res) => {
   res.status(404).json({ message: "Endpoint not found" });
@@ -134,7 +135,8 @@ app.use((err, req, res, next) => {
 if (process.env.VERCEL_ENV) {
   module.exports = app;
 } else {
-  const PORT = process.env.PORT || 5000;
+  // Windows often reserves port 5000; use 5001 locally if unset
+  const PORT = process.env.PORT || 5001;
   app.listen(PORT, () => {
     console.log(`🚀 Server running on http://localhost:${PORT}`);
   });

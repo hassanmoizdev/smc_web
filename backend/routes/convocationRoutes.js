@@ -4,17 +4,59 @@ import { uploadConvocation } from "../config/cloudinary.js";
 import nodemailer from "nodemailer";
 
 const router = express.Router();
+const MAX_CONVOCATION_MEMBERS = 200;
 
-// Prepare multer configuration to handle multiple specific fields
-// We expect a main `picture`, and up to 5 distinction attachments (`distinction_year1`, etc)
 const cpUpload = uploadConvocation.fields([
     { name: "picture", maxCount: 1 },
+    { name: "paymentSlip", maxCount: 1 },
     { name: "distinction_year1", maxCount: 1 },
     { name: "distinction_year2", maxCount: 1 },
     { name: "distinction_year3", maxCount: 1 },
     { name: "distinction_year4", maxCount: 1 },
     { name: "distinction_year5", maxCount: 1 },
 ]);
+
+function fileUrl(files, fieldName) {
+    const file = files?.[fieldName]?.[0];
+    if (!file) return "";
+    // Cloudinary returns https URL in file.path
+    if (file.path && /^https?:\/\//i.test(file.path)) {
+        return file.path;
+    }
+    // Local disk: always store web path (not Windows absolute path)
+    return `/uploads/convocations/${file.filename}`;
+}
+
+function normalizeMediaUrl(url) {
+    if (!url || /^https?:\/\//i.test(url)) return url || "";
+    const normalized = String(url).replace(/\\/g, "/");
+    const idx = normalized.toLowerCase().indexOf("/uploads/");
+    return idx !== -1 ? normalized.slice(idx) : url;
+}
+
+function formatRecord(record) {
+    const obj = record.toObject ? record.toObject() : { ...record };
+    obj.picture = normalizeMediaUrl(obj.picture);
+    obj.paymentSlip = normalizeMediaUrl(obj.paymentSlip);
+    if (obj.distinctionFiles) {
+        for (const key of Object.keys(obj.distinctionFiles)) {
+            obj.distinctionFiles[key] = normalizeMediaUrl(obj.distinctionFiles[key]);
+        }
+    }
+    return obj;
+}
+
+async function getNextConvocationNumber() {
+    const used = await Convocation.find({
+        paymentStatus: "verified",
+        convocationNumber: { $ne: null },
+    }).select("convocationNumber");
+    const usedSet = new Set(used.map((r) => r.convocationNumber));
+    for (let n = 1; n <= MAX_CONVOCATION_MEMBERS; n++) {
+        if (!usedSet.has(n)) return n;
+    }
+    return null;
+}
 
 router.post("/", cpUpload, async (req, res) => {
     try {
@@ -32,11 +74,18 @@ router.post("/", cpUpload, async (req, res) => {
             positionHolder,
             department,
             currentPosition,
-            attendConvocation,
+            transactionId,
         } = req.body;
 
-        // Build the positions data safely by parsing if it came as a JSON string,
-        // or manually reconstructing from fields. Let's assume frontend sends flat fields for simplicity.
+        if (!transactionId?.trim()) {
+            return res.status(400).json({ error: "Transaction ID is required." });
+        }
+
+        const paymentSlipUrl = fileUrl(req.files, "paymentSlip");
+        if (!paymentSlipUrl) {
+            return res.status(400).json({ error: "Payment slip upload is required." });
+        }
+
         const positions = {
             year1: req.body.position_year1 || "",
             year2: req.body.position_year2 || "",
@@ -45,18 +94,14 @@ router.post("/", cpUpload, async (req, res) => {
             year5: req.body.position_year5 || "",
         };
 
-        // Extract file paths from req.files provided by multer-cloudinary or locals
-        let pictureUrl = "";
-        if (req.files && req.files["picture"] && req.files["picture"][0]) {
-            pictureUrl = req.files["picture"][0].path || `/uploads/convocations/${req.files["picture"][0].filename}`;
-        }
+        const pictureUrl = fileUrl(req.files, "picture");
 
         const distinctionFiles = {
-            year1: req.files && req.files["distinction_year1"] && req.files["distinction_year1"][0] ? req.files["distinction_year1"][0].path || `/uploads/convocations/${req.files["distinction_year1"][0].filename}` : "",
-            year2: req.files && req.files["distinction_year2"] && req.files["distinction_year2"][0] ? req.files["distinction_year2"][0].path || `/uploads/convocations/${req.files["distinction_year2"][0].filename}` : "",
-            year3: req.files && req.files["distinction_year3"] && req.files["distinction_year3"][0] ? req.files["distinction_year3"][0].path || `/uploads/convocations/${req.files["distinction_year3"][0].filename}` : "",
-            year4: req.files && req.files["distinction_year4"] && req.files["distinction_year4"][0] ? req.files["distinction_year4"][0].path || `/uploads/convocations/${req.files["distinction_year4"][0].filename}` : "",
-            year5: req.files && req.files["distinction_year5"] && req.files["distinction_year5"][0] ? req.files["distinction_year5"][0].path || `/uploads/convocations/${req.files["distinction_year5"][0].filename}` : "",
+            year1: fileUrl(req.files, "distinction_year1"),
+            year2: fileUrl(req.files, "distinction_year2"),
+            year3: fileUrl(req.files, "distinction_year3"),
+            year4: fileUrl(req.files, "distinction_year4"),
+            year5: fileUrl(req.files, "distinction_year5"),
         };
 
         const newConvocation = new Convocation({
@@ -75,20 +120,19 @@ router.post("/", cpUpload, async (req, res) => {
             positions,
             department,
             currentPosition,
-            attendConvocation,
+            transactionId: transactionId.trim(),
+            paymentSlip: paymentSlipUrl,
+            paymentStatus: "pending",
             picture: pictureUrl,
         });
 
         await newConvocation.save();
 
-        // Send confirmation email asynchronously
         if (email) {
             try {
-                // Configure transporter (using Gmail/SMTP as an example, ideally use env vars)
                 const transporter = nodemailer.createTransport({
                     service: "gmail",
                     auth: {
-                        // User should set up these env variables for the email to actually work
                         user: process.env.EMAIL_USER || "your-email@gmail.com",
                         pass: process.env.EMAIL_PASS || "your-app-password",
                     },
@@ -97,27 +141,24 @@ router.post("/", cpUpload, async (req, res) => {
                 const mailOptions = {
                     from: process.env.EMAIL_USER || "your-email@gmail.com",
                     to: email,
-                    subject: "Convocation Registration Confirmation - SMC",
+                    subject: "Convocation Registration Received - SMC",
                     html: `
                         <div style="font-family: Arial, sans-serif; max-w: 600px; margin: 0 auto; border: 1px solid #e0e0e0; border-radius: 8px; overflow: hidden;">
                             <div style="background-color: #8b0000; color: white; padding: 20px; text-align: center;">
-                                <h1 style="margin: 0; font-size: 24px;">Registration Confirmed</h1>
+                                <h1 style="margin: 0; font-size: 24px;">Registration Received</h1>
                             </div>
                             <div style="padding: 30px; background-color: #f9f9f9;">
                                 <p style="font-size: 16px; color: #333;">Dear <strong>${name}</strong>,</p>
                                 <p style="font-size: 16px; color: #333; line-height: 1.5;">
-                                    Your registration for the SMC Convocation has been successfully received.
+                                    Your convocation registration and payment details have been received. Our team will verify your transaction and confirm your seat.
                                 </p>
                                 <div style="background-color: white; border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px; margin: 20px 0;">
                                     <h3 style="margin-top: 0; color: #8b0000; border-bottom: 2px solid #8b0000; padding-bottom: 10px;">Registration Details</h3>
-                                    <p style="margin: 5px 0;"><strong>Attendance Name:</strong> ${name}</p>
+                                    <p style="margin: 5px 0;"><strong>Name:</strong> ${name}</p>
                                     <p style="margin: 5px 0;"><strong>College ID:</strong> ${collegeId || "N/A"}</p>
-                                    <p style="margin: 5px 0;"><strong>Department:</strong> ${department || "N/A"}</p>
-                                    <p style="margin: 5px 0;"><strong>Will Attend:</strong> ${attendConvocation}</p>
+                                    <p style="margin: 5px 0;"><strong>Transaction ID:</strong> ${transactionId}</p>
+                                    <p style="margin: 5px 0;"><strong>Status:</strong> Pending verification</p>
                                 </div>
-                                <p style="font-size: 14px; color: #666; margin-top: 30px;">
-                                    If you have any questions, please contact the administration.
-                                </p>
                                 <p style="font-size: 14px; color: #666;">
                                     Best Regards,<br>
                                     <strong>SMC Administration</strong>
@@ -127,8 +168,7 @@ router.post("/", cpUpload, async (req, res) => {
                     `,
                 };
 
-                // Don't wait for email to send to return response
-                transporter.sendMail(mailOptions).catch(err => {
+                transporter.sendMail(mailOptions).catch((err) => {
                     console.error("Failed to send confirmation email:", err);
                 });
             } catch (err) {
@@ -136,24 +176,80 @@ router.post("/", cpUpload, async (req, res) => {
             }
         }
 
-        res.status(201).json({ message: "Convocation registration submitted successfully", record: newConvocation });
+        res.status(201).json({
+            message: "Convocation registration submitted successfully. Payment is pending verification.",
+            record: formatRecord(newConvocation),
+        });
     } catch (error) {
         console.error("Error submitting convocation form:", error);
         res.status(500).json({ error: "An error occurred while submitting the form. Please try again." });
     }
 });
 
-// Endpoint to get all registrations (likely for admin dashboard later)
 router.get("/", async (req, res) => {
     try {
         const records = await Convocation.find().sort({ createdAt: -1 });
-        res.status(200).json(records);
+        res.status(200).json(records.map(formatRecord));
     } catch (error) {
         res.status(500).json({ error: "Failed to fetch records" });
     }
 });
 
-// Endpoint to delete a registration by ID
+router.patch("/:id/verify", async (req, res) => {
+    try {
+        const record = await Convocation.findById(req.params.id);
+        if (!record) {
+            return res.status(404).json({ error: "Record not found" });
+        }
+
+        if (record.paymentStatus === "verified" && record.convocationNumber) {
+            return res.status(200).json({ message: "Already verified", record: formatRecord(record) });
+        }
+
+        const verifiedCount = await Convocation.countDocuments({ paymentStatus: "verified" });
+        if (verifiedCount >= MAX_CONVOCATION_MEMBERS) {
+            return res.status(400).json({
+                error: `Maximum ${MAX_CONVOCATION_MEMBERS} convocation members already verified.`,
+            });
+        }
+
+        const nextNumber = await getNextConvocationNumber();
+        if (!nextNumber) {
+            return res.status(400).json({ error: "No convocation numbers available (1–200 are full)." });
+        }
+
+        record.paymentStatus = "verified";
+        record.convocationNumber = nextNumber;
+        await record.save();
+
+        res.status(200).json({
+            message: `Payment verified. Convocation number ${nextNumber} assigned.`,
+            record: formatRecord(record),
+        });
+    } catch (error) {
+        console.error("Error verifying convocation:", error);
+        res.status(500).json({ error: "Failed to verify payment" });
+    }
+});
+
+router.patch("/:id/reject", async (req, res) => {
+    try {
+        const record = await Convocation.findById(req.params.id);
+        if (!record) {
+            return res.status(404).json({ error: "Record not found" });
+        }
+
+        record.paymentStatus = "rejected";
+        record.convocationNumber = null;
+        await record.save();
+
+        res.status(200).json({ message: "Payment rejected", record: formatRecord(record) });
+    } catch (error) {
+        console.error("Error rejecting convocation:", error);
+        res.status(500).json({ error: "Failed to reject payment" });
+    }
+});
+
 router.delete("/:id", async (req, res) => {
     try {
         const deletedRecord = await Convocation.findByIdAndDelete(req.params.id);

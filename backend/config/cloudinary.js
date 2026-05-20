@@ -1,6 +1,7 @@
 import { v2 as cloudinary } from 'cloudinary';
 import { CloudinaryStorage } from 'multer-storage-cloudinary';
 import multer from 'multer';
+import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
@@ -26,6 +27,11 @@ const createLocalStorage = (folder) => {
   return multer.diskStorage({
     destination: (req, file, cb) => {
       const uploadPath = path.join(__dirname, `../uploads/${folder}`);
+      try {
+        fs.mkdirSync(uploadPath, { recursive: true });
+      } catch (err) {
+        return cb(err);
+      }
       cb(null, uploadPath);
     },
     filename: (req, file, cb) => {
@@ -94,7 +100,7 @@ export const uploadResearch = multer({
 });
 
 export const uploadConvocation = multer({
-  storage: createStorage('convocations', ['jpg', 'jpeg', 'png', 'pdf']),
+  storage: createStorage('convocations', ['jpg', 'jpeg', 'png', 'webp', 'pdf']),
   limits: { fileSize: 5 * 1024 * 1024 }, // 5MB limit per file
 });
 
