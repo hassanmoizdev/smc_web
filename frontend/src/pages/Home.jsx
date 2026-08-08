@@ -11,12 +11,15 @@ import OurLocation from "../components/OurLocation";
 import Header from "../components/Header";
 import OurVisionAndMission from "../components/OurVisionAndMission";
 import LearningOutcomes from "../components/LearningOutcomes";
+import AdvertisementModal from "../components/AdvertisementModal";
+
 function Home() {
   return (
     <>                
       <Helmet>
         <title>Home - SMC</title>
       </Helmet>
+      <AdvertisementModal />
       <Header />
       <Slidshow />
       <WhySection />

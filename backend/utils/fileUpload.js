@@ -7,12 +7,10 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
  
 // Determine if we should use Cloudinary or local storage
-const USE_CLOUDINARY = process.env.USE_CLOUDINARY === 'true' || 
-                      process.env.NODE_ENV === 'production' || 
-                      process.env.VERCEL_ENV === '1';
+const USE_CLOUDINARY = false;
 
 // Local storage paths
-const LOCAL_UPLOADS_PATH = path.join(__dirname, '../../uploads');
+const LOCAL_UPLOADS_PATH = path.join(__dirname, '../uploads');
 
 /**
  * Upload file handler - uses Cloudinary in production, local storage in development
@@ -51,7 +49,7 @@ export const handleFileDeletion = async (filePath, publicId = null) => {
       await deleteFromCloudinary(publicId);
     } else if (!USE_CLOUDINARY) {
       // Delete local file
-      const fullPath = path.join(__dirname, '../../', filePath);
+      const fullPath = path.join(__dirname, '..', filePath);
       if (fs.existsSync(fullPath)) {
         fs.unlinkSync(fullPath);
       }

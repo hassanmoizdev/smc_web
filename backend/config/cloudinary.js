@@ -9,9 +9,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // Check if we should use Cloudinary
-const USE_CLOUDINARY = process.env.USE_CLOUDINARY === 'true' ||
-  process.env.NODE_ENV === 'production' ||
-  process.env.VERCEL_ENV === '1';
+const USE_CLOUDINARY = false;
 
 // Configure Cloudinary only if needed
 if (USE_CLOUDINARY) {
