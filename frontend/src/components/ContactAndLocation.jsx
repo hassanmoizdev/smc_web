@@ -16,34 +16,34 @@ function ContactAndLocation() {
           <form action="process_contact_form.php" method="POST" className="flex flex-col gap-[15px]">
             <div className="flex flex-col">
               <label htmlFor="name" className="font-medium mb-1.5 text-[#222]">Your Name</label>
-              <input 
-                type="text" id="name" name="name" placeholder="Enter your full name" required 
+              <input
+                type="text" id="name" name="name" placeholder="Enter your full name" required
                 className="border border-[#ccc] rounded-md px-3 py-2.5 text-[0.95rem] transition-all focus:border-[#8B0000] focus:outline-none focus:ring-2 focus:ring-[#8B0000]/30"
               />
             </div>
             <div className="flex flex-col">
               <label htmlFor="email" className="font-medium mb-1.5 text-[#222]">Your Email</label>
-              <input 
-                type="email" id="email" name="email" placeholder="name@example.com" required 
+              <input
+                type="email" id="email" name="email" placeholder="name@example.com" required
                 className="border border-[#ccc] rounded-md px-3 py-2.5 text-[0.95rem] transition-all focus:border-[#8B0000] focus:outline-none focus:ring-2 focus:ring-[#8B0000]/30"
               />
             </div>
             <div className="flex flex-col">
               <label htmlFor="subject" className="font-medium mb-1.5 text-[#222]">Subject</label>
-              <input 
-                type="text" id="subject" name="subject" placeholder="e.g., Admission Inquiry" 
+              <input
+                type="text" id="subject" name="subject" placeholder="e.g., Admission Inquiry"
                 className="border border-[#ccc] rounded-md px-3 py-2.5 text-[0.95rem] transition-all focus:border-[#8B0000] focus:outline-none focus:ring-2 focus:ring-[#8B0000]/30"
               />
             </div>
             <div className="flex flex-col">
               <label htmlFor="message" className="font-medium mb-1.5 text-[#222]">Your Message</label>
-              <textarea 
-                id="message" name="message" rows="5" placeholder="Type your message here..." required 
+              <textarea
+                id="message" name="message" rows="5" placeholder="Type your message here..." required
                 className="border border-[#ccc] rounded-md px-3 py-2.5 text-[0.95rem] transition-all focus:border-[#8B0000] focus:outline-none focus:ring-2 focus:ring-[#8B0000]/30"
               ></textarea>
             </div>
-            <button 
-              type="submit" 
+            <button
+              type="submit"
               className="bg-[#8B0000] text-white font-semibold py-3 px-[22px] rounded-lg cursor-pointer transition-all duration-300 hover:bg-[#660000] hover:-translate-y-0.5"
             >
               Send Message
@@ -60,7 +60,7 @@ function ContactAndLocation() {
             <i className="fas fa-map-marker-alt text-[18px] text-[#8B0000] mt-1"></i>
             <div>
               <strong className="block mb-1">Address</strong>
-              <p className="text-[0.95rem] leading-relaxed">Sargodha Medical College, 117-C Zafar Ullah Road Satellite Town Sargodha, Punjab, Pakistan</p>
+              <p className="text-[0.95rem] leading-relaxed">Sargodha Medical College, Faisalabad Road, Sargodha</p>
             </div>
           </div>
           <div className="flex items-start gap-3 mb-[18px] md:flex-col">
@@ -102,9 +102,9 @@ function ContactAndLocation() {
           Find Us on Map
         </h3>
         <div className="w-full h-[400px] rounded-xl overflow-hidden shadow-[0_4px_12px_rgba(0,0,0,0.1)] animate-fadeIn">
-          <iframe 
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3380.514669951652!2d72.67886211039271!3d32.08237311905389!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x392177c78290fa5f%3A0x565020a87a5cbf2!2sSargodha%20Institute%20of%20Health%20Sciences!5e0!3m2!1sen!2s!4v1759162833384!5m2!1sen!2s" 
-            allowFullScreen="" title="map" loading="lazy" 
+          <iframe
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3383.4112214551965!2d72.7231407!3d32.0039728!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3921826576c80d67%3A0x1701a729b24f826!2sSargodha%20Medical%20College!5e0!3m2!1sen!2s!4v1792078283331!5m2!1sen!2s"
+            allowFullScreen="" title="map" loading="lazy"
             referrerPolicy="no-referrer-when-downgrade"
             className="w-full h-full border-0"
           ></iframe>

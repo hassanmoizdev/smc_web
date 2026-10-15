@@ -6,9 +6,6 @@ function OurLocation() {
 
   // This is the specific EMBED URL for Sargodha Medical College.
   // Standard links will ALWAYS say "Refused to Connect".
-  const DEFAULT_MAP =
-    "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3401.554034870535!2d72.7118086762551!3d32.05436662057971!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3921770932283e3b%3A0x64426543b5e40854!2sSargodha%20Medical%20College!5e0!3m2!1sen!2s!4v1700000000000!5m2!1sen!2s";
-
   useEffect(() => {
     fetch(SETTINGS_API.SITE)
       .then((res) => res.json())
@@ -32,7 +29,7 @@ function OurLocation() {
           {/* Map Side - FIXED IFRAME */}
           <div className="flex-1 min-h-[400px] rounded-lg overflow-hidden border border-gray-200 shadow-inner bg-gray-50">
             <iframe
-              src={settings?.mapEmbedUrl || DEFAULT_MAP}
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3383.4112214551965!2d72.7231407!3d32.0039728!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3921826576c80d67%3A0x1701a729b24f826!2sSargodha%20Medical%20College!5e0!3m2!1sen!2s!4v1792078283331!5m2!1sen!2s"
               className="w-full h-full border-0"
               allowFullScreen=""
               loading="lazy"
